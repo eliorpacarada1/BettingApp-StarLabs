@@ -88,11 +88,13 @@ namespace BettingApp.Services
             }
         }
 
-        public async Task<BetUpdateResponse> UpdateBet(Bet bet)
+        public async Task<BetUpdateResponse> UpdateBet(BetCreateRequest bet)
         {
             try
             {
-                var result = await _betRepository.UpdateBet(bet);
+                var mappedBet = _mapper.Map<Bet>(bet);
+
+                var result = await _betRepository.UpdateBet(mappedBet);
                 return _mapper.Map<BetUpdateResponse>(bet);
             }
             catch (Exception ex)
