@@ -1,4 +1,5 @@
-﻿using BettingApp.Dtos.Responses;
+﻿using BettingApp.Dtos.Requests;
+using BettingApp.Dtos.Responses;
 using BettingApp.Models;
 
 namespace BettingApp.Services
@@ -7,7 +8,7 @@ namespace BettingApp.Services
     {
         Task<List<BetReadResponse>> GetAllBets();
         Task<BetReadResponse> GetBetById(Guid id);
-        Task<BetCreateResponse> CreateBet(Bet bet);
+        Task<BetCreateResponse> CreateBet(BetCreateRequest bet);
         Task<BetUpdateResponse> UpdateBet(Bet bet);
         Task<bool> DeleteBet(Guid id);
     }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BettingApp.Dtos.Requests;
 using BettingApp.Dtos.Responses;
 using BettingApp.Models;
 using BettingApp.Repositories;
@@ -18,11 +19,12 @@ namespace BettingApp.Services
             _logger = logger;
             _mapper = mapper;
         }
-        public async Task<BetCreateResponse> CreateBet(Bet bet)
+        public async Task<BetCreateResponse> CreateBet(BetCreateRequest bet)
         {
             try
             {
-                var result = await _betRepository.CreateBet(bet);
+                var mappedBet = _mapper.Map<Bet>(bet);
+                var result = await _betRepository.CreateBet(mappedBet);
                 if (result != null)
                 {
                     return _mapper.Map<BetCreateResponse>(result);
