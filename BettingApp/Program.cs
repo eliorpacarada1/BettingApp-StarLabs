@@ -1,4 +1,7 @@
 using BettingApp.Data;
+using BettingApp.Models;
+using BettingApp.Repositories;
+using BettingApp.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,9 +9,18 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddAutoMapper(typeof(Bet));
+
+builder.Services.AddTransient<IBetRepository, BetRepository>();
+
+builder.Services.AddTransient<IBetService, BetService>();
+
 
 var connectionString = builder.Configuration.GetConnectionString("MyWebApiConection");
 builder.Services.AddDbContext<MyWebApiContext>(options =>

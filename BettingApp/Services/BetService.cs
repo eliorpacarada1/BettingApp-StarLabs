@@ -1,32 +1,103 @@
-﻿using BettingApp.Models;
+﻿using AutoMapper;
+using BettingApp.Dtos.Responses;
+using BettingApp.Models;
+using BettingApp.Repositories;
 
 namespace BettingApp.Services
 {
     public class BetService : IBetService
     {
-        public Task<Bet> CreateBet(Bet bet)
+        private readonly IBetRepository _betRepository;
+        private readonly ILogger<BetService> _logger;
+        private readonly IMapper _mapper;
+
+
+        public BetService(IBetRepository betRepository, ILogger<BetService> logger, IMapper mapper)
         {
-            throw new NotImplementedException();
+            _betRepository = betRepository;
+            _logger = logger;
+            _mapper = mapper;
+        }
+        public async Task<BetCreateResponse> CreateBet(Bet bet)
+        {
+            try
+            {
+                var result = await _betRepository.CreateBet(bet);
+                if (result != null)
+                {
+                    return _mapper.Map<BetCreateResponse>(result);
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Couldn't create bet: {ex}",ex.Message);
+                throw;
+            }
+        }
+        public async Task<bool> DeleteBet(Guid id)
+        {
+            try
+            {
+                var bet = await _betRepository.GetBetById(id);
+                if(bet != null)
+                {
+                    return await _betRepository.DeleteBet(bet);
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Couldn't delete bet: {ex}", ex.Message);
+                throw;
+            }
         }
 
-        public Task<bool> DeleteBet(Guid id)
+        public async Task<List<BetReadResponse>> GetAllBets()
         {
-            throw new NotImplementedException();
+            try
+            {
+                return _mapper.Map<List<BetReadResponse>>(await _betRepository.GetAllBets());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Couldn't get bets: {ex}", ex.Message);
+                throw;
+            }
         }
 
-        public Task<List<Bet>> GetAllBets()
+        public async Task<BetReadResponse> GetBetById(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var bet = await _betRepository.GetBetById(id);
+                if (bet != null)
+                {
+                    return _mapper.Map<BetReadResponse>(bet);
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Couldn't get bet: {ex}", ex);
+                throw;
+            }
         }
 
-        public Task<Bet> GetBetById(Guid id)
+        public async Task<BetUpdateResponse> UpdateBet(Bet bet)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<Bet> UpdateBet(Bet bet)
-        {
-            throw new NotImplementedException();
+            try
+            {
+                var result = await _betRepository.UpdateBet(bet);
+                return _mapper.Map<BetUpdateResponse>(bet);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Couldn't update bet: {ex}", ex);
+                throw;
+            }
         }
     }
 }

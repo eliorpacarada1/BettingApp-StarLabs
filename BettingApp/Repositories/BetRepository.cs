@@ -42,7 +42,6 @@ namespace BettingApp.Repositories
             _context.Update(bet);
             await _context.SaveChangesAsync();
             return bet;
-
         }
     }
 }
