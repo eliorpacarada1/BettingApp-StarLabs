@@ -32,13 +32,17 @@ namespace BettingApp.Repositories
         }
 
         public async Task<Bet> GetBetById(Guid id)
-        {
-            return await _context.Bets.FindAsync(id);
+        { 
+            var bet = await _context.Bets.FindAsync(id);
+            _context.Entry(bet).State = EntityState.Detached;
+            return bet;
         }
 
         public async Task<Bet> UpdateBet(Bet bet)
         {
+
             bet.LastUpdated = DateTime.UtcNow;
+            _context.Entry(bet).State = EntityState.Modified;
             _context.Update(bet);
             await _context.SaveChangesAsync();
             return bet;

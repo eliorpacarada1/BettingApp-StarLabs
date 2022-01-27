@@ -98,12 +98,16 @@ namespace BettingApp.Services
         {
             try
             {
-                var updatebet = await _betRepository.GetBetById(id);
-                if (updatebet != null)
+                var updateBet = await _betRepository.GetBetById(id);
+                if (updateBet != null)
                 {
-                    var mappedBet = _mapper.Map<Bet>(bet);
-                    var result = await _betRepository.UpdateBet(mappedBet);
-                    return _mapper.Map<BetUpdateResponse>(result);
+                    if (id == updateBet.Id)
+                    {
+                        var mappedBet = _mapper.Map<Bet>(bet);
+                        var result = await _betRepository.UpdateBet(mappedBet);
+                        return _mapper.Map<BetUpdateResponse>(result);
+                    }
+                    return null;
                 }
                 return null;
             }
