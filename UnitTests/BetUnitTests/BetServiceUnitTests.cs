@@ -65,11 +65,13 @@ namespace UnitTests.BetUnitTests
         public async Task CreateBet_InvalidInformation_BetNotCreated()
         {
             //Arrange
+            _betRepositoryMock.Setup(x => x.CreateBet(It.IsAny<Bet>())).ReturnsAsync((Bet)null);
 
             //Act
+            var result = await _sut.CreateBet(betCreateRequest);
 
             //Assert
-
+            Assert.Null(result);
         }
 
         [Fact]
@@ -154,6 +156,7 @@ namespace UnitTests.BetUnitTests
             Assert.False(result);
 
         }
+      
 
         //[Fact]
         //public async Task UpdateBet_ValidData_BetUpdated()
