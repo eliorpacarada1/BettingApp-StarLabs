@@ -155,23 +155,23 @@ namespace UnitTests.BetUnitTests
         public async Task UpdateBet_ValidData_BetUpdated()
         {
             //Arrange
-            _betRepositoryMock.Setup(x => x.UpdateBet(It.IsAny<Bet>())).ReturnsAsync(bet);
+            Bet newBet = new Bet();
+            newBet.Amount = 123.3m;
+            newBet.Id = bet.Id;
+            newBet.LastUpdated = DateTime.UtcNow;
+
+            _betRepositoryMock.Setup(x => x.UpdateBet(It.IsAny<Bet>())).ReturnsAsync(newBet);
+            _betRepositoryMock.Setup(x => x.GetBetById(It.IsAny<Guid>())).ReturnsAsync(bet);
             
-            BetCreateRequest formerBetCreateRequest = BetHelper.BetCreateRequestData();
-            Bet formerBet = BetHelper.BetData(formerBetCreateRequest);
-            formerBet.Amount = 123.3m;
-            formerBet.Id = bet.Id;
-            _betRepositoryMock.Setup(x => x.GetBetById(It.IsAny<Guid>())).ReturnsAsync(formerBet);
-            _mapperMock.Setup(x => x.Map<Bet>(It.IsAny<BetUpdateRequest>())).Returns(formerBet);
-            
-            BetUpdateResponse betUpdateResponse = BetHelper.BetUpdateResponseData(bet);
+            BetUpdateResponse betUpdateResponse = BetHelper.BetUpdateResponseData(newBet);
+            _mapperMock.Setup(x => x.Map<Bet>(It.IsAny<BetUpdateRequest>())).Returns(newBet);
             _mapperMock.Setup(x => x.Map<BetUpdateResponse>(It.IsAny<Bet>())).Returns(betUpdateResponse);
 
             //Act
             var result = await _sut.UpdateBet(bet.Id, betUpdateRequest);
 
             //Assert
-            Assert.NotEqual(formerBet.Amount, bet.Amount);
+            Assert.NotEqual(result.Amount, bet.Amount);
         }
     }
 }
