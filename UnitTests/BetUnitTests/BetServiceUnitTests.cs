@@ -109,7 +109,7 @@ namespace UnitTests.BetUnitTests
         }
 
         [Fact]
-        public async Task GetBetById_InValidData_NoBetReturned()
+        public async Task GetBetById_InvalidData_BetNotReturned()
         {
             //Arrange
             _mapperMock.Setup(x => x.Map<BetReadResponse>(It.IsAny<Bet>()));
@@ -125,7 +125,6 @@ namespace UnitTests.BetUnitTests
 
         public async Task DeleteBet_ValidData_BetDeleted()
         {
-
             //Arrange
             _betRepositoryMock.Setup(x => x.DeleteBet(It.IsAny<Bet>())).ReturnsAsync(true);
             _betRepositoryMock.Setup(x => x.GetBetById(It.IsAny<Guid>())).ReturnsAsync(bet);
@@ -141,14 +140,13 @@ namespace UnitTests.BetUnitTests
         public async Task DeleteBet_InValidData_BetNotDeleted()
         {
             //Arrange
-            _betRepositoryMock.Setup(x => x.GetBetById(It.IsAny<Guid>())).ReturnsAsync((Bet)null);
+            _betRepositoryMock.Setup(x => x.GetBetById(It.IsAny<Guid>())).ReturnsAsync(() => null);
             
             //Act
             var result = await _sut.DeleteBet(bet.Id);
             
             //Assert
             Assert.False(result);
-
         }
 
         [Fact]
@@ -172,6 +170,35 @@ namespace UnitTests.BetUnitTests
 
             //Assert
             Assert.NotEqual(result.Amount, bet.Amount);
+        }
+
+        [Fact]
+        public async Task UpdateBet_InvalidData_BetNotFound()
+        {
+            //Arrange
+            _betRepositoryMock.Setup(x => x.GetBetById(It.IsAny<Guid>())).ReturnsAsync(() => null);
+
+            //Act
+            var result = await _sut.UpdateBet(bet.Id, betUpdateRequest);
+
+            //Assert
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public async Task UpdateBet_InvalidData_NotTheSameId()
+        {
+            //Arrange
+            BetCreateRequest betCreateRequest = BetHelper.BetCreateRequestData();
+            Bet randomBet = BetHelper.BetData(betCreateRequest);
+            BetUpdateRequest randomBetUpdateRequest = BetHelper.BetUpdateRequestData(randomBet);
+            _betRepositoryMock.Setup(x => x.GetBetById(It.IsAny<Guid>())).ReturnsAsync(randomBet);
+
+            //Act
+            var result = await _sut.UpdateBet(bet.Id, randomBetUpdateRequest);
+
+            //Assert
+            Assert.Null(result);
         }
     }
 }

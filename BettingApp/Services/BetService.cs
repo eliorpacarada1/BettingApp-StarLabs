@@ -12,13 +12,13 @@ namespace BettingApp.Services
         private readonly ILogger<BetService> _logger;
         private readonly IMapper _mapper;
 
-
         public BetService(IBetRepository betRepository, ILogger<BetService> logger, IMapper mapper)
         {
             _betRepository = betRepository;
             _logger = logger;
             _mapper = mapper;
         }
+
         public async Task<BetCreateResponse> CreateBet(BetCreateRequest bet)
         {
             try
@@ -29,7 +29,6 @@ namespace BettingApp.Services
                 {
                     return _mapper.Map<BetCreateResponse>(result);
                 }
-
                 return null;
             }
             catch (Exception ex)
@@ -38,6 +37,7 @@ namespace BettingApp.Services
                 throw;
             }
         }
+
         public async Task<bool> DeleteBet(Guid id)
         {
             try
@@ -61,11 +61,10 @@ namespace BettingApp.Services
             try
             {
                 var betList = await _betRepository.GetAllBets();
-                if (betList.Count() > 0)
+                if (betList.Any())
                 {
                     return _mapper.Map<List<BetReadResponse>>(betList);
                 }
-
                 return null;
             }
             catch (Exception ex)
@@ -84,7 +83,6 @@ namespace BettingApp.Services
                 {
                     return _mapper.Map<BetReadResponse>(bet);
                 }
-
                 return null;
             }
             catch (Exception ex)

@@ -12,8 +12,8 @@ namespace BettingApp.Profiles
             CreateMap<Bet, BetReadResponse>().ReverseMap();
             CreateMap<Bet, BetUpdateResponse>().ReverseMap();
             CreateMap<Bet, BetCreateResponse>().ReverseMap();
-            CreateMap<Bet, BetCreateRequest>().ReverseMap();
-            CreateMap<Bet, BetUpdateRequest>().ReverseMap();
+            CreateMap<Bet, BetCreateRequest>();
+            CreateMap<Bet, BetUpdateRequest>();
         }
     }
 }
