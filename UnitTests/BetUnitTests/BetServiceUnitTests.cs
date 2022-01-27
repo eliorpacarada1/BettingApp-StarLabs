@@ -26,6 +26,7 @@ namespace UnitTests.BetUnitTests
         private static readonly BetCreateResponse betCreateResponse = BetHelper.BetCreateResponseData(bet);
         private static readonly List<Bet> betList = BetHelper.BetListData();
         private static readonly List<BetReadResponse> betReadResponseList = BetHelper.BetReadResponseListData(betList);
+        private static readonly BetReadResponse betReadResponse = BetHelper.BetReadResponseData(bet);
 
         private readonly BetService _sut;
 
@@ -98,6 +99,40 @@ namespace UnitTests.BetUnitTests
 
             //Assert
             Assert.Null(result);
+        }
+        [Fact]
+        public async Task GetBetById_ValidData_BetReturned()
+        {
+            //Arrange
+            _mapperMock.Setup(x => x.Map<BetReadResponse>(It.IsAny<Bet>())).Returns(betReadResponse);
+            _betRepositoryMock.Setup(x => x.GetBetById(It.IsAny<Guid>())).ReturnsAsync(bet);
+
+            //Act
+            var result = await _sut.GetBetById(betReadResponse.Id);
+
+            //Assert
+            Assert.NotNull(result);
+            Assert.Equal(result, betReadResponse);
+        }
+
+        [Fact]
+        public async Task GetBetById_InValidData_NoBetReturned()
+        {
+            //Arrange
+            _mapperMock.Setup(x => x.Map<BetReadResponse>(It.IsAny<Bet>()));
+            _betRepositoryMock.Setup(x => x.GetBetById(It.IsAny<Guid>())).ReturnsAsync(bet);
+
+            //Act
+            var result = await _sut.GetBetById(Guid.Empty);
+
+            //Assert
+            Assert.Null(result);
+        }
+        [Fact]
+        public async Task DeleteBet_ValidData_BetDeleted()
+        {
+            //Arrange
+
         }
     }
 }
