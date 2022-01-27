@@ -38,7 +38,7 @@ namespace BettingApp.Repositories
 
         public async Task<Bet> UpdateBet(Bet bet)
         {
-            bet.LastUpdated = DateTime.Now;
+            bet.LastUpdated = DateTime.UtcNow;
             _context.Update(bet);
             await _context.SaveChangesAsync();
             return bet;

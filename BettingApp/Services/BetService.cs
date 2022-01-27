@@ -95,7 +95,8 @@ namespace BettingApp.Services
                 var mappedBet = _mapper.Map<Bet>(bet);
 
                 var result = await _betRepository.UpdateBet(mappedBet);
-                return _mapper.Map<BetUpdateResponse>(bet);
+                return _mapper.Map<BetUpdateResponse>(result);
+                //mir po doket mer!
             }
             catch (Exception ex)
             {
