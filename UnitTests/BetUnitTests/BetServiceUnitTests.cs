@@ -26,8 +26,6 @@ namespace UnitTests.BetUnitTests
         private static readonly List<BetReadResponse> betReadResponseList = BetHelper.BetReadResponseListData(betList);
         private static readonly BetReadResponse betReadResponse = BetHelper.BetReadResponseData(bet);
         private static readonly BetUpdateRequest betUpdateRequest = BetHelper.BetUpdateRequestData(bet);
-        /*private static readonly BetUpdateResponse betUpdateResponse = BetHelper.*/
-        //private static readonly BetUpdateResponse updateBet = BetHelper.BetReadResponseData(betCreateRequest);
 
         private readonly BetService _sut;
 
@@ -38,22 +36,18 @@ namespace UnitTests.BetUnitTests
                 _mapperMock.Object);
         }
 
-        //For example qekjo. Ju shtohet FACT per me kallzu qe esht unit test
         [Fact]
         public async Task CreateBet_ValidInformation_BetCreated()
         {
-            //Ni unit test i ka 3 pjes -  Arrange, Act, Assert
-
-            //Arrange - Bahen setup mocks se qka ka me kthy secila
-            //Qekjo It.IsAny<T> esht metod jo gjenerike qe metodes ja lejon qe nsecilen rast qe ka ni bet, ka me kthy betin e specifikum
+            //Arrange
             _betRepositoryMock.Setup(x => x.CreateBet(It.IsAny<Bet>())).ReturnsAsync(bet);
             _mapperMock.Setup(x => x.Map<Bet>(It.IsAny<BetCreateRequest>())).Returns(bet);
             _mapperMock.Setup(x => x.Map<BetCreateResponse>(It.IsAny<Bet>())).Returns(betCreateResponse);
 
-            //Act - Qetu thirret metoda e service. Kthen resultin qe nbaz qysh i kena mock na senet na nbaz tlogjikes ka me kthy diqka
+            //Act
             var result = await _sut.CreateBet(betCreateRequest);
 
-            //Assert - Assertimet nese kan ba pass unit testet
+            //Assert
             Assert.NotNull(result);
             Assert.Equal(result, betCreateResponse);
         }
@@ -98,6 +92,7 @@ namespace UnitTests.BetUnitTests
             //Assert
             Assert.Null(result);
         }
+
         [Fact]
         public async Task GetBetById_ValidData_BetReturned()
         {
@@ -127,6 +122,7 @@ namespace UnitTests.BetUnitTests
             Assert.Null(result);
         }
         [Fact]
+
         public async Task DeleteBet_ValidData_BetDeleted()
         {
 
@@ -140,6 +136,7 @@ namespace UnitTests.BetUnitTests
             //Assert
             Assert.True(result);
         }
+
         [Fact]
         public async Task DeleteBet_InValidData_BetNotDeleted()
         {
@@ -154,20 +151,19 @@ namespace UnitTests.BetUnitTests
 
         }
 
-
         [Fact]
         public async Task UpdateBet_ValidData_BetUpdated()
         {
-
             //Arrange
             _betRepositoryMock.Setup(x => x.UpdateBet(It.IsAny<Bet>())).ReturnsAsync(bet);
+            
             BetCreateRequest formerBetCreateRequest = BetHelper.BetCreateRequestData();
             Bet formerBet = BetHelper.BetData(formerBetCreateRequest);
             formerBet.Amount = 123.3m;
             formerBet.Id = bet.Id;
             _betRepositoryMock.Setup(x => x.GetBetById(It.IsAny<Guid>())).ReturnsAsync(formerBet);
-
             _mapperMock.Setup(x => x.Map<Bet>(It.IsAny<BetUpdateRequest>())).Returns(formerBet);
+            
             BetUpdateResponse betUpdateResponse = BetHelper.BetUpdateResponseData(bet);
             _mapperMock.Setup(x => x.Map<BetUpdateResponse>(It.IsAny<Bet>())).Returns(betUpdateResponse);
 
