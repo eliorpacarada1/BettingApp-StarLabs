@@ -60,7 +60,13 @@ namespace BettingApp.Services
         {
             try
             {
-                return _mapper.Map<List<BetReadResponse>>(await _betRepository.GetAllBets());
+                var betList = await _betRepository.GetAllBets();
+                if (betList.Count() > 0)
+                {
+                    return _mapper.Map<List<BetReadResponse>>(betList);
+                }
+
+                return null;
             }
             catch (Exception ex)
             {

@@ -38,7 +38,7 @@ namespace BettingApp.Controllers
         {
             return await _betService.UpdateBet(request);
         }
-        [HttpDelete("deleteBet/{id}")]
+        [HttpDelete("deletebet/{id}")]
         public async Task<bool> DeleteBet(Guid id)
         {
             return await _betService.DeleteBet(id);
