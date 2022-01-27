@@ -25,6 +25,7 @@ namespace UnitTests.BetUnitTests
         private static readonly List<Bet> betList = BetHelper.BetListData();
         private static readonly List<BetReadResponse> betReadResponseList = BetHelper.BetReadResponseListData(betList);
         private static readonly BetReadResponse betReadResponse = BetHelper.BetReadResponseData(bet);
+        //private static readonly BetUpdateResponse updateBet = BetHelper.BetReadResponseData(betCreateRequest);
 
         private readonly BetService _sut;
 
@@ -154,5 +155,12 @@ namespace UnitTests.BetUnitTests
 
         }
 
+        //[Fact]
+        //public async Task UpdateBet_ValidData_BetUpdated()
+        //{
+        //    //Arrange
+        //    _mapperMock.Setup(x => x.Map<BetReadResponse>(It.IsAny<BetUpdateResponse>()));
+        //    _betRepositoryMock.Setup(x=>x.UpdateBet())
+        //}
     }
 }

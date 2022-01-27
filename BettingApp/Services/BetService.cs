@@ -94,15 +94,18 @@ namespace BettingApp.Services
             }
         }
 
-        public async Task<BetUpdateResponse> UpdateBet(BetCreateRequest bet)
+        public async Task<BetUpdateResponse> UpdateBet(Guid id, BetUpdateRequest bet)
         {
             try
             {
-                var mappedBet = _mapper.Map<Bet>(bet);
-
-                var result = await _betRepository.UpdateBet(mappedBet);
-                return _mapper.Map<BetUpdateResponse>(result);
-                //mir po doket mer!
+                var updatebet = await _betRepository.GetBetById(id);
+                if (updatebet != null)
+                {
+                    var mappedBet = _mapper.Map<Bet>(bet);
+                    var result = await _betRepository.UpdateBet(mappedBet);
+                    return _mapper.Map<BetUpdateResponse>(result);
+                }
+                return null;
             }
             catch (Exception ex)
             {

@@ -77,5 +77,13 @@ namespace UnitTests.BetUnitTests.Helper
 
             return betReadResponseList;
         }
+
+        public static BetUpdateRequest BetUpdateRequestData()
+        {
+            return new Faker<BetUpdateRequest>()
+                .RuleFor(x => x.Id, Guid.NewGuid)
+                .RuleFor(x => x.Amount, new Randomizer().Decimal(1, 10))
+                .Generate();
+        }
     }
 }

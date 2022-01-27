@@ -34,9 +34,9 @@ namespace BettingApp.Controllers
             return await _betService.GetBetById(id);
         }
         [HttpPut("updatebet/{id}")]
-        public async Task<BetUpdateResponse> UpdateBet([FromBody] BetCreateRequest request)
+        public async Task<BetUpdateResponse> UpdateBet(Guid id,[FromBody] BetUpdateRequest request)
         {
-            return await _betService.UpdateBet(request);
+            return await _betService.UpdateBet(id, request);
         }
         [HttpDelete("deletebet/{id}")]
         public async Task<bool> DeleteBet(Guid id)
