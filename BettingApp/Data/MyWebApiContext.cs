@@ -7,6 +7,6 @@ namespace BettingApp.Data
     {
         public MyWebApiContext(DbContextOptions<MyWebApiContext> options) : base(options) { }
 
-        DbSet<Bet> Bets { get; set; }
+        public DbSet<Bet> Bets { get; set; }
     }
 }
