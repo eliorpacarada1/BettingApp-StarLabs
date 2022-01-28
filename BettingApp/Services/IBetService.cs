@@ -1,6 +1,5 @@
 ﻿using BettingApp.Dtos.Requests;
 using BettingApp.Dtos.Responses;
-using BettingApp.Models;
 
 namespace BettingApp.Services
 {

@@ -1,6 +1,4 @@
-﻿using System.Net;
-using BettingApp.Dtos.Requests;
-using BettingApp.Dtos.Responses;
+﻿using BettingApp.Dtos.Requests;
 using BettingApp.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,7 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BettingApp.Controllers
 {
-    
+    /// <summary>
+    /// Bet API crud controller
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class BetController : ControllerBase
