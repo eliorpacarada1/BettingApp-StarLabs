@@ -12,6 +12,22 @@ namespace BettingApp.Repositories
         {
             _context = context;
         }
+        public async Task<List<Bet>> GetAllBets()
+        {
+            return await _context.Bets.ToListAsync();
+        }
+
+        public async Task<Bet> GetBetById(Guid id)
+        {
+            var bet = await _context.Bets.FindAsync(id);
+            if (bet != null)
+            {
+                _context.Entry(bet).State = EntityState.Detached;
+                return bet;
+            }
+            return bet;
+        }
+        
         public async Task<Bet> CreateBet(Bet bet)
         {
             await _context.AddAsync(bet);
@@ -24,18 +40,6 @@ namespace BettingApp.Repositories
             _context.Remove(bet);
             await _context.SaveChangesAsync();
             return true;
-        }
-
-        public async Task<List<Bet>> GetAllBets()
-        {
-            return await _context.Bets.ToListAsync();
-        }
-
-        public async Task<Bet> GetBetById(Guid id)
-        { 
-            var bet = await _context.Bets.FindAsync(id);
-            _context.Entry(bet).State = EntityState.Detached;
-            return bet;
         }
 
         public async Task<Bet> UpdateBet(Bet bet)
