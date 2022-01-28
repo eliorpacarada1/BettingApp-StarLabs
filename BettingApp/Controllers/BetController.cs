@@ -1,4 +1,6 @@
 ﻿using BettingApp.Dtos.Requests;
+using BettingApp.Dtos.Responses;
+using BettingApp.Models;
 using BettingApp.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,7 +27,7 @@ namespace BettingApp.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("getallbets/")]
-        public async Task<IActionResult> GetAllBets()
+        public async Task<ActionResult<List<Bet>>> GetAllBets()
         {
             var result = await _betService.GetAllBets();
             return (result != null) ? Ok(result) : NotFound();
@@ -37,7 +39,7 @@ namespace BettingApp.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("getbet/{id}")]
-        public async Task<IActionResult> GetBet(Guid id)
+        public async Task<ActionResult<Bet>> GetBet(Guid id)
         {
             var result = await _betService.GetBetById(id);
             return (result != null) ? Ok(result) : NotFound();
@@ -49,7 +51,7 @@ namespace BettingApp.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost("createbet/")]
-        public async Task<IActionResult> CreateBet([FromBody] BetCreateRequest request)
+        public async Task<ActionResult<BetCreateResponse>> CreateBet([FromBody] BetCreateRequest request)
         {
             var result = await _betService.CreateBet(request);
             return Ok(result);
@@ -62,7 +64,7 @@ namespace BettingApp.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPut("updatebet/{id}")]
-        public async Task<IActionResult> UpdateBet(Guid id,[FromBody] BetUpdateRequest request)
+        public async Task<ActionResult<BetUpdateResponse>> UpdateBet(Guid id,[FromBody] BetUpdateRequest request)
         {
             var result = await _betService.UpdateBet(id, request);
             return (result != null) ? Ok(result) : NotFound();
@@ -74,7 +76,7 @@ namespace BettingApp.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("deletebet/{id}")]
-        public async Task<IActionResult> DeleteBet(Guid id)
+        public async Task<ActionResult<bool>> DeleteBet(Guid id)
         {
             var result =  await _betService.DeleteBet(id);
             return (result) ? Ok(result) : NotFound(result);
